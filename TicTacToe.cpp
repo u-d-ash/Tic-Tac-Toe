@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <limits>
 
 using namespace std;
 
@@ -120,17 +121,23 @@ int main(){
             printboard(board);
             int s;
             cin >> s;
-            if(valid(s) && unfilled(s, board)){
+
+            if((valid(s) && unfilled(s, board) )&& !cin.fail()){
                 board = changeboard(board, s,  t);
                 t++;
             }else{
 
                 validinput:
+                    if(cin.fail()){
+                        cin.clear();
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n' );
+                    }
+                    
                     cout << "Please Enter Valid Input" << endl;
                     int lol;
                     cin >> lol;
             
-                if(!valid(lol) || !unfilled(lol, board))
+                if((!valid(lol) || !unfilled(lol, board)) || cin.fail())
                     goto validinput;
                 else
                     board = changeboard(board, lol, t);
